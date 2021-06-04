@@ -21,6 +21,8 @@ class HomeViewModel: NSObject {
     
     var sections: [Section] = []
     
+    /// Descarga el feed de películas populares.
+    /// - Parameter completed: un bloque de código a ejecutarse una vez terminada la tarea asíncrona
     func downloadMovies(completed: @escaping (Bool) -> ()) {
         service.getMovies(endPoint: PopularEndPoint()) { downloadedMovies in
             self.sections.append(Section(title: "Popular", movies: downloadedMovies))
@@ -32,6 +34,8 @@ class HomeViewModel: NSObject {
         }
     }
     
+    /// Descarga el feed de películas "TopRated".
+    /// - Parameter completed: un bloque de código a ejecutarse una vez terminada la tarea asíncrona
     func downloadTopRatedMovies(completed: @escaping (Bool) -> ()) {
         service.getMovies(endPoint: TopRatedEndPoint()) { downloadedMovies in
             self.sections.append(Section(title: "Top Rated", movies: downloadedMovies))
@@ -43,6 +47,8 @@ class HomeViewModel: NSObject {
         }
     }
     
+    /// Descarga el feed de películas "Upcoming".
+    /// - Parameter completed: un bloque de código a ejecutarse una vez terminada la tarea asíncrona
     func downloadUpcomingMovies(completed: @escaping (Bool) -> ()) {
         service.getMovies(endPoint: UpcomingEndPoint()) { downloadedMovies in
             self.sections.append(Section(title: "Upcoming", movies: downloadedMovies))
@@ -54,6 +60,10 @@ class HomeViewModel: NSObject {
         }
     }
     
+    /// Descarga la imagen para una película seleccionada
+    /// - Parameters:
+    ///   - movie: la película seleccionada que contiene un imagepath
+    ///   - completed: un bloque que regresa un image data
     func downloadImageFrom(movie: Movie, completed: @escaping (Data?) -> ()) {
         if let image = imageCache.object(forKey: movie.posterPath as AnyObject) as? Data {
             completed(image)
@@ -70,6 +80,10 @@ class HomeViewModel: NSObject {
         }
     }
     
+    /// Filtra secciones en base al query entregado desde la barra de búsqueda
+    /// - Parameters:
+    ///   - query: el texto escrito en la barra de búsqueda
+    ///   - section: la sección en la que se va a buscar. Si el string es vació entonces es búsqueda global
     func filterSections(forSearchQuery query: String?, inSection section: String = "") -> [Section] {
         let sections = sections.filter {
             guard !section.isEmpty && section != "All" else { return true }

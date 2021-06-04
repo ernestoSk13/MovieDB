@@ -37,6 +37,8 @@ class HomeViewController: UIViewController {
         return layout
     }
     
+    /// Genera un layout para la colección actual
+    /// - Returns: una sección con el layout construido
     func makeHorizontalLayout() -> NSCollectionLayoutSection? {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                                              heightDimension: .fractionalHeight(1.0)))
